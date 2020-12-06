@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <title>Smart-Home</title>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name = "viewport" content = "initial-scale = 1.0, user-scalable = no">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <link rel="apple-touch-icon" href="/resources/C_icon.png">
+        <link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+         href="/resources/launch.png">
+        <link rel="manifest" href="manifest.json">
+        <link rel="stylesheet" href="style.css">
+       
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+         crossorigin="anonymous"></script>
+        <script>
+
+        let myNodelist = document.getElementsByTagName("li");
+        var i;
+        for (i = 0; i < myNodelist.length; i++) {
+            var span = document.createElement("SPAN");
+            var txt = document.createTextNode("\u00D7");
+            span.className = "close";
+            span.appendChild(txt);
+            myNodelist[i].appendChild(span);
+        }
+
+        // Click on a close button to hide the current list item
+        var close = document.getElementsByClassName("close");
+        var i;
+        for (i = 0; i < close.length; i++) {
+        close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+        }
+        }
+
+        // Add a "checked" symbol when clicking on a list item
+        var list = document.querySelector('ul');
+        list.addEventListener('click', (ev) => {
+            if (ev.target.tagName === 'li') {
+                ev.target.classList.toggle('checked');
+            }
+        }, false);
+   
+
+        // Create a new list item when clicking on the "Add" button
+        function newElement() {
+        var li = document.createElement("li");
+        var inputValue = document.getElementById("listInput").value;
+        var t = document.createTextNode(inputValue);
+        li.appendChild(t);
+        if (inputValue === '') {
+            alert("You must write something!");
+        } else {
+            document.getElementById("list").appendChild(li);
+        }
+        document.getElementById("listInput").value = "";
+
+        var span = document.createElement("SPAN");
+        var txt = document.createTextNode("\u00D7");
+        span.className = "close";
+        span.appendChild(txt);
+        li.appendChild(span);
+
+        for (i = 0; i < close.length; i++) {
+            close[i].onclick = function() {
+            var div = this.parentElement;
+            div.style.display = "none";
+            }
+            }
+        }
+
+
+
+            // set up a clock
+            function startTime() {
+                let today = new Date();
+                document.getElementById('clock').innerHTML = today.toLocaleTimeString();
+                document.getElementById('date').innerHTML = today.toLocaleDateString();
+                let t = setTimeout(startTime, 500);
+            }
+            // add zero in front of numbers < 10
+            function checkTime(i) {
+                if (i < 10) {i = "0" + i};  
+                     return i;
+            }
+
+            // navbar disappears when scrolling down/ appears at the top
+            let prevScrollpos = window.pageYOffset;
+            window.onscroll = function() {
+                let currentScrollPos = window.pageYOffset;
+            if (prevScrollpos < currentScrollPos) {
+                document.getElementById("navbar").style.top = "-170px";
+            }  
+            if (window.pageYOffset <= 50) {
+                document.getElementById("navbar").style.top = "0";
+            }
+            prevScrollpos = currentScrollPos;
+            };
+
+            function playAlarm() {
+                let alarm = document.getElementById("alarm");
+                alarm.muted = false;
+            }
+
+            // sets countdown for 5min changes img of exercise
+            function setMeditationTimer(time) {
+                document.getElementById("alarm").play();
+                document.getElementById("alarm").muted = true;
+                startTimer(time);
+                document.getElementById("exercise").src="/resources/exercise_on.png"
+                setTimeout(function(){ document.getElementById("exercise").src="/resources/exercise.png";}, time * 1000);
+            };
+            function setNapTimer(time) {
+                startTimer(time);
+                $('#nap')[0].src="/resources/nap_on.png"
+                setTimeout(function(){ document.getElementById("nap").src="/resources/nap.png";}, time * 1000);
+            };
+            // starts a timer for 
+            // @param duration of time
+            function startTimer(duration) {
+                let start = Date.now(),
+                    diff,
+                    minutes,
+                    seconds;
+                function timer() {
+                        // get the number of seconds that have elapsed since 
+                        // startTimer() was called 
+                    diff = duration - (((Date.now() - start) / 1000) | 0);
+
+                    minutes = (diff / 60) | 0;
+                    seconds = (diff % 60) | 0;
+
+                    minutes = minutes < 10 ? "0" + minutes : minutes;
+                    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                    $('#welc')[0].innerHTML = minutes + " : " + seconds; 
+
+                    if (seconds <= 0) {
+                    clearInterval(x);
+                    $('#welc')[0].innerHTML = "WILLKOMMEN!";
+                    //implement alarm here
+                    playAlarm();
+                    }
+                };
+                let x = setInterval(timer, 1000); 
+            }
+
+            // event handler 1-5           
+            function handle1(num,state){
+                changePlug(num,state);
+            };
+            function handle2(num,state){
+                changePlug(num,state);
+            };
+            function handle3(num,state){
+                changePlug(num,state);
+            }
+            function handle4(num, state){
+                changePlug(num,state);
+            };
+            function handle5(num, state){
+                changePlug(num,state);
+            };
+
+            // ajax call to switch the @param state of @param num of plug
+            function changePlug(num,state) {
+                $.post(`http://localhost:8080/api/${num}/${state}`, (data) => {
+                    if (data.state === "on") {
+                            $(`#${num}`)[0].setAttribute("onClick", `handle${num}(${num},'off')`);
+                            $(`#${num}`)[0].src = `/resources/${num}_on.png`
+                        } else {
+                            $(`#${num}`)[0].setAttribute("onClick", `handle${num}(${num},'on')`);
+                            $(`#${num}`)[0].src = `/resources/${num}.png`
+                        }
+                }
+            )};
+            // IR Remote Key Controls
+            function remote(dev,key) {
+                $.post(`http://localhost:8080/ir/${dev}/${key}`, (result) => {
+                    console.log(result);
+                })
+            }
+
+            // slide window 
+            function openSlide(window) {
+                $(`#${window}`)[0].style.height = '100%';
+            }
+            function closeSlide(window) {
+                $(`#${window}`)[0].style.height = '0%';
+            }
+        </script>
+
+
+    </head>
+    <body onload="startTime()" ontouchstart="">
+
+        <div id="navbar">
+                <a onclick="openSlide('feed')"> FEED</a>
+                <a> <img src="/resources/C.png"  id="logo" onclick="history.go(0)"> </a>
+                <a onclick="openSlide('remoteControl')"> REMOTE </a>
+        </div>
+
+        <div style= "margin-top:170px;" class="center">
+                <div id="date"></div>
+                <div id="clock"></div>
+                <div id="welc">WILLKOMMEN!</div>  
+                <img id="4" src="/resources/4.png" onclick="handle4('4', 'on')">
+                <img id="1" src="/resources/1.png"  onclick="handle1('1', 'on')">
+                <img id="2" src="/resources/2.png" onclick="handle2('2', 'on')">
+                <img id="3" src="/resources/3.png" onclick="handle3('3', 'on')">
+                <img id="exercise" src="/resources/exercise.png" onclick="setMeditationTimer(300)">
+                <img id="nap"  src="/resources/nap.png" onclick="setNapTimer(1200)">
+                <img id="5" src="/resources/5_on.png" onclick="handle5('5', 'off')"
+                style="width: 5%;">
+        </div>
+
+        <div id="feed" class="overlay">
+            <h2> FEED </h2>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSlide('feed')">&times;</a>
+
+            <div id="todo" class="listHeader">
+                <input type="text" id="listInput" placeholder="What do you want to do ?">
+                <span onclick="newElement()" class="addBtn">Add</span>
+              </div>
+              
+              <ul id="list">
+                <li class="checked">Pay bills</li>
+                <li>Meet George</li>
+                <li>Buy eggs</li>
+                <li>Read a book</li>
+                <li>Organize office</li>
+              </ul>
+          
+        </div>
+
+        <div id="remoteControl" class="overlay">
+            <h2> REMOTE CONTROL </h2>
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSlide('remoteControl')">&times;</a>
+            <table>
+                <tr>
+                    <td>
+                        <img class="remote" src="/resources/led.png" onclick="remote('led','power')">
+                        <img class="remote" src="/resources/tvRemote.png" onclick="remote('tv','power')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="remote" src="/resources/up.png" onclick="remote('led','up')">
+                        <img class="remote" src="/resources/up.png" onclick="remote('tv','volUp')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="remote" src="/resources/down.png" onclick="remote('led','down')">
+                        <img class="remote" src="/resources/down.png" onclick="remote('tv','volDown')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <img class="remote" src="/resources/palette.png" onclick="remote('led','change')">
+                        <img class="remote" src="/resources/mute.png" onclick="remote('tv','mute')">
+                    </td>
+                </tr>
+            </div>
+        </div>
+
+       
+        <audio id="alarm" muted=true>
+            <source src="alarm.mp3" type="audio/mpeg">
+        </audio>
+        
+    </body>
+</html>

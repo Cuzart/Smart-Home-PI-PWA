@@ -1,0 +1,19 @@
+{
+  "name": "mynode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "myserver.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "audio-loader": "^1.0.3",
+    "audio-play": "^2.2.1",
+    "audio-speaker": "^1.5.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "shelljs": "^0.8.3"
+  }
+}

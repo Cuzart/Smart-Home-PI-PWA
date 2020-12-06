@@ -1,0 +1,248 @@
+    body {
+    -webkit-user-select: none; /* for native APP effect*/
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    margin: 0;
+    background-color:rgb(94, 93, 93);
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    color: #f1f1f1;
+    }         
+
+
+    #navbar {
+    display: flex;
+    justify-content: center;
+    background-color: #313131;
+    position: fixed; 
+    top: 0; 
+    width: 100%; 
+    transition: top 0.3s; 
+    }
+
+    /* Style the navbar links */
+    #navbar a {
+    color: #f1f1f1;
+    text-align: center;
+    padding: 50px;
+    }
+
+    #navbar a:hover {
+    color: rgb(255, 236, 172);
+    }
+
+    #navbar img {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 7%;
+    }
+    #navbar img:hover{opacity: 0.7; width: 6.8%;}
+ 
+
+    /* vBox with functional images*/
+    
+    #clock {
+        text-align: center;
+        font-weight: bolder;
+        font-size: x-large; 
+    }
+    #date {
+        text-align: center;
+        font-weight: lighter;
+    }
+    #welc {
+        text-align: center;
+        font-weight: lighter;
+    }
+    .center {
+        margin-bottom: 100px;
+    }
+
+    .center > img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 50px;
+        width: 15%;
+    }
+    .center > img:hover{opacity: 0.85; width: 14.9%};
+
+    .remote {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    width: 15%;
+    border-radius: 200px;
+    background: #434343;
+    box-shadow:  42px 42px 84px #282828, 
+                -42px -42px 84px #5e5e5e;
+    }
+
+    .overlay {
+        height: 0;
+        width: 100%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.9);
+        overflow-x: hidden;
+        transition: 0.5s;
+    }
+    .overlay h2 {
+        padding: 30px; 
+        color: rgb(255, 255, 255); 
+        text-align: center;
+    }
+    .overlay table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .overlay img {
+        width: 80px;
+        padding: 20px;
+        transition: 0.3s;
+    }
+    .overlay img:hover, .overlay img:focus {
+        opacity: 0.7;
+    }
+    .overlay a {
+        position: absolute;
+        top: 10px;
+        right: 30px;
+        font-size: 50px;
+        text-decoration: none;
+        color: #f1f1f1;
+    }
+
+
+
+
+    * {
+        box-sizing: border-box;
+      }
+      
+    ul {
+        margin: 0;
+        padding: 0;
+      }
+      
+      /* Style the list items */
+      ul li {
+        cursor: pointer;
+        position: relative;
+        padding: 12px 8px 12px 40px;
+        background: #eee;
+        font-size: 18px;
+        transition: 0.2s;
+      
+        /* make the list items unselectable */
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+      }
+      
+      /* Set all odd list items to a different color (zebra-stripes) */
+      ul li:nth-child(odd) {
+        background: #f9f9f9;
+      }
+      
+      /* Darker background-color on hover */
+      ul li:hover {
+        background: #ddd;
+      }
+      
+      /* When clicked on, add a background color and strike out text */
+      ul li.checked {
+        background: #888;
+        color: #fff;
+        text-decoration: line-through;
+      }
+      
+      /* Add a "checked" mark when clicked on */
+      ul li.checked::before {
+        content: '';
+        position: absolute;
+        border-color: #fff;
+        border-style: solid;
+        border-width: 0 2px 2px 0;
+        top: 10px;
+        left: 16px;
+        transform: rotate(45deg);
+        height: 15px;
+        width: 7px;
+      }
+      
+      /* Style the close button */
+      .close {
+        position: absolute;
+        right: 0;
+        top: 0;
+        padding: 12px 16px 12px 16px;
+      }
+      
+      .close:hover {
+        background-color: #f44336;
+        color: white;
+      }
+      
+      /* Style the header */
+      .listHeader {
+        background-color: #f44336;
+        padding: 30px 40px;
+        color: white;
+        text-align: center;
+      }
+      
+      /* Clear floats after the header */
+      .listHeader:after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+      
+      /* Style the input */
+      #listInput {
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        width: 75%;
+        padding: 10px;
+        float: left;
+        font-size: 16px;
+      }
+      
+      /* Style the "Add" button */
+      .addBtn {
+        padding: 10px;
+        width: 25%;
+        background: #d9d9d9;
+        color: #555;
+        float: left;
+        text-align: center;
+        font-size: 16px;
+        cursor: pointer;
+        transition: 0.3s;
+        border-radius: 0;
+      }
+      
+      .addBtn:hover {
+        background-color: #bbb;
+      }
+
+
+
+    @media screen and (max-width:600px) {
+        #navbar img {
+            width: 25%;
+        }
+        .overlay img {
+            width: 50px;
+        }
+
+    }
